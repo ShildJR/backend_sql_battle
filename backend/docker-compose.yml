@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  backend:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      - DATABASE_URL=sqlite+aiosqlite:///./sql_battle.db
+      - SECRET_KEY=change-this-in-production
+      - CORS_ORIGINS=http://localhost:3000
+    volumes:
+      - ./data:/app/data
+    command: >
+      sh -c "python seed.py && uvicorn main:app --host 0.0.0.0 --port 8000"
+
+  # Optional: PostgreSQL
+  # db:
+  #   image: postgres:15
+  #   environment:
+  #     POSTGRES_USER: sql_battle
+  #     POSTGRES_PASSWORD: password
+  #     POSTGRES_DB: sql_battle
+  #   ports:
+  #     - "5432:5432"
+  #   volumes:
+  #     - pgdata:/var/lib/postgresql/data
+
+# volumes:
+#   pgdata:
